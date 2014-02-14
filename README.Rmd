@@ -69,7 +69,7 @@ output_plot <-   g +
 
 ```
 
-```{r fig.width=7, fig.height=6, echo = FALSE, message=FALSE, warning=FALSE}
+```{r fig.width=9, fig.height=8, echo = FALSE, message=FALSE, warning=FALSE}
 print(output_plot)
 ```
 
