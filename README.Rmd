@@ -9,7 +9,8 @@ Test of AUC <= .6 vs AUC > .6 when the true AUC = .65
 
 S0 is baseline survival at prediction time (5 years)
 
-
+ - $Y \sim N(0,1)$
+ - Measures estimated at $t_{predict} = 5$ with marker cutpoint value $c = 0$ 
 
 ```{r, echo = FALSE, results='hide', message=FALSE}
 library(ggplot2)
@@ -39,10 +40,10 @@ for(s0 in S0){
     
       beta[index,] <- c(n, s0, "beta", mean(tmp$beta$power))
       AUC[index,] <- c(n, s0, "AUC", mean(tmp$AUC$power))
-      TPR[index,] <- c(n, s0, "TPR", mean(tmp$TPR$power))
-      FPR[index,] <- c(n, s0, "FPR", mean(tmp$FPR$power))   
-      PPV[index,] <- c(n, s0, "PPV", mean(tmp$PPV$power))  
-      NPV[index,] <- c(n, s0, "NPV", mean(tmp$NPV$power))   
+      TPR[index,] <- c(n, s0, "TPR(0)", mean(tmp$TPR$power))
+      FPR[index,] <- c(n, s0, "FPR(0)", mean(tmp$FPR$power))   
+      PPV[index,] <- c(n, s0, "PPV(0)", mean(tmp$PPV$power))  
+      NPV[index,] <- c(n, s0, "NPV(0)", mean(tmp$NPV$power))   
    print(paste("n:", n, "  s0", s0))
   }  
 }
@@ -63,13 +64,15 @@ g <- ggplot(subset(simData, Measure != "PPV" & Measure != "NPV"), aes(x=N, y= Po
 output_plot <-   g + 
                  geom_line(size = 1.2) + 
                  facet_grid(Measure~.) + 
-                 scale_color_gradient(low = "red") +
-                 geom_hline(yintercept = .9)
+                # scale_color_gradient(low = "red") +
+                 geom_hline(yintercept = .9) +
+                 scale_color_continuous(name=expression("S(t=5 | Y=0)"), low = "red")
+        
 
 
 ```
 
 ```{r fig.width=9, fig.height=8, echo = FALSE, message=FALSE, warning=FALSE}
-print(output_plot)
+output_plot
 ```
 
