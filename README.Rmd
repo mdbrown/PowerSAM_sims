@@ -60,7 +60,7 @@ save(simData, file = "data/simData.Rdata")
 
 load("data/simData.Rdata")
 
-g <- ggplot(subset(simData, Measure != "PPV" & Measure != "NPV"), aes(x=N, y= Power, group= factor(S0), color = S0))
+g <- ggplot(subset(simData, Measure != "2PPV(0)" & Measure != "2NPV(0)"), aes(x=N, y= Power, group= factor(S0), color = S0))
 output_plot <-   g + 
                  geom_line(size = 1.2) + 
                  facet_grid(Measure~.) + 
@@ -76,7 +76,9 @@ output_plot <-   g +
 
 ```
 
-```{r fig.width=9, fig.height=10, echo = FALSE, message=FALSE, warning=FALSE}
+```{r fig.width=9, fig.height=14, echo = FALSE, message=FALSE, warning=FALSE}
+
 output_plot
+
 ```
 
