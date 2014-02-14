@@ -1,0 +1,75 @@
+PowerSAM_sims
+=============
+
+simulation study to learn more about the performance of PowerSAM 
+
+I want to build a plot of N by power for all the different measures. 
+
+Test of AUC <= .6 vs AUC > .6 when the true AUC = .65
+
+S0 is baseline survival at prediction time (5 years)
+
+
+
+```{r, echo = FALSE, results='hide', message=FALSE}
+library(ggplot2)
+library(reshape)
+#process some data
+
+if(FALSE){
+S0 = c(0.05, 0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 0.95)
+N = seq(100, 2000, 100)
+
+#only will have to do this once, then comment out
+
+beta <- data.frame(matrix(nrow= length(S0*length(N)), ncol = 4))
+AUC <- data.frame(matrix(nrow= length(S0*length(N)), ncol = 4))
+TPR <- data.frame(matrix(nrow= length(S0*length(N)), ncol = 4))
+FPR <- data.frame(matrix(nrow= length(S0*length(N)), ncol = 4))
+PPV <- data.frame(matrix(nrow= length(S0*length(N)), ncol = 4))
+NPV <- data.frame(matrix(nrow= length(S0*length(N)), ncol = 4))
+names(beta) = names(AUC) = names(TPR) = names(FPR ) = names(PPV) = names(NPV) <- c("N", "S0", "Measure", "Power")
+
+index = 0
+for(s0 in S0){
+  for(n in N){
+    index = index + 1
+   #load in data, take what we want
+    load(paste("data/simout_S0_", s0, "_N_", n, ".Rdata", sep = ""))
+    
+      beta[index,] <- c(n, s0, "beta", mean(tmp$beta$power))
+      AUC[index,] <- c(n, s0, "AUC", mean(tmp$AUC$power))
+      TPR[index,] <- c(n, s0, "TPR", mean(tmp$TPR$power))
+      FPR[index,] <- c(n, s0, "FPR", mean(tmp$FPR$power))   
+      PPV[index,] <- c(n, s0, "PPV", mean(tmp$PPV$power))  
+      NPV[index,] <- c(n, s0, "NPV", mean(tmp$NPV$power))   
+   print(paste("n:", n, "  s0", s0))
+  }  
+}
+
+simData <- rbind(beta, AUC, TPR, FPR, PPV, NPV)
+simData$N <- as.numeric(simData$N)
+simData$S0 <- as.numeric(simData$S0)
+simData$Power <- as.numeric(simData$Power)
+save(simData, file = "data/simData.Rdata")
+}
+
+###already did above, just load in data
+
+
+load("data/simData.Rdata")
+
+g <- ggplot(subset(simData, Measure != "PPV" & Measure != "NPV"), aes(x=N, y= Power, group= factor(S0), color = S0))
+output_plot <-   g + 
+                 geom_line(size = 1.2) + 
+                 facet_grid(Measure~.) + 
+                 scale_color_gradient(low = "red") +
+                 geom_hline(yintercept = .9)
+
+
+```
+
+```{r fig.width=7, fig.height=6, echo = FALSE, message=FALSE, warning=FALSE}
+print(output_plot)
+```
+
