@@ -12,7 +12,7 @@ def main():
   for S0 in S0vec:
     for N in Nvec:
 
-      cmd = 'sbatch --account zheng_y --cpus-per-task=1 --time=1-0 --wrap=\"R --no-save --no-restore --args N=%d S0=%f cens.perc=%f< onesim.R\"' % (N, S0, C)
+      cmd = 'sbatch --account zheng_y --cpus-per-task=1 --time=1-0 --wrap=\"R --no-save --no-restore --args N=%d S0=%f cens.perc=%f< onesim_AUC.R\"' % (N, S0, C)
       (status, output) = commands.getstatusoutput(cmd)
       print(cmd)
       
