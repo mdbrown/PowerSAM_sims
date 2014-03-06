@@ -6,7 +6,7 @@ library(survival)
 source("../../PowerSAM/main.R")
 source("../../PowerSAM/subroutines.R")
 source("../../PowerSAM/Estimation.R")
-
+source("../../PowerSAM/dipw.R")
 
 par = "AUC"
 
@@ -48,7 +48,7 @@ beta = mybetas[2]
 
 
 
-
+system.time(
 tmp <- SimulateN(N, parameter = par, 
                       S.0 = S0, 
                       t.0 = t.0,
@@ -56,16 +56,16 @@ tmp <- SimulateN(N, parameter = par,
                       predict.time = predict.time,
                       parval.H0 = H0, 
                       parval.Ha = Ha, 
-                      ESTmethod = "SP", 
+                      ESTmethod = "NP", 
                       f_x = dnorm, 
                       F_xInv = qnorm, 
                       mm = M,  
                       alpha = 0.05, 
                       cens.lam = myLam, 
-                      time.max = time.max)
+                      time.max = time.max))
 
 
-save(tmp, file = paste("../data/simout_cens_", cens.perc, "_S0_", S0, "_N_", N,"_", par,  ".Rdata", sep = ""))
+save(tmp, file = paste("../data/simout_cens_", cens.perc, "_S0_", S0, "_N_", N,"_", par,  "_NP.Rdata", sep = ""))
 
 #library(grid)
 #library(ggplot2)

@@ -99,12 +99,12 @@
 
       \begin{itemize}
         \item[] \textbf{Marker distribution:} $Y \sim N(0,1)$
-        \item[] \textbf{Failure time:} We assume a Cox proportional hazards model
+        \item[] \textbf{Failure time:} We assume a Cox proportional hazards model:
          $$ S(t|Y) = S_0(t)^{e^{\beta Y}} $$ 
-         where the baseline survival function is exponental 
+         where the baseline survival function is exponental: 
          $$ S_0(t) = e^{-at}$$
 
-        \item[] \textbf{Censoring:} We assume non-informative censoring. Censoring time follows a right truncated exponential disribution with point mass at followup time. 
+        \item[] \textbf{Censoring} We assume non-informative censoring. Censoring time follows a right truncated exponential disribution with point mass at followup time. 
       \end{itemize}
 
         
